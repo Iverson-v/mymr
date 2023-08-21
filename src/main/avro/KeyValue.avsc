@@ -1,0 +1,9 @@
+{
+  "namespace": "com.ksc.wordcount.avro",
+  "type": "record",
+  "name": "AvroKeyValue",
+  "fields": [
+      {"name": "key", "type": "string"},
+      {"name": "value", "type": "int"}
+  ]
+}
