@@ -140,8 +140,37 @@ public class UrlTopNDriver {
 
                     });
 
-                    return map.entrySet().stream()
-                            .map(e -> new KeyValue(e.getKey(), e.getValue()));
+
+//                    return map.entrySet().stream()
+//                            .map(e -> new KeyValue(e.getKey(), e.getValue()));
+
+
+                    List<KeyValue<String, Integer>> topnList = map.entrySet().stream()
+                            .map(e -> new KeyValue<String, Integer>(e.getKey(), e.getValue()))
+                            .sorted((kv1, kv2) -> kv2.getValue() - kv1.getValue())
+                            .collect(Collectors.toList());
+
+                    //选择前topn个。
+                    List<KeyValue<String, Integer>> rankedList = new ArrayList<>();
+                    //当topn小于等于0的时候直接返回空。
+                    if (topN<=0)
+                        return rankedList.stream();
+                    //当总数量少于topn的时候全部返回
+                    if (topnList.size()<=topN)
+                        return topnList.stream();
+                    //选出前topn个。
+                    rankedList.add(topnList.get(0));
+                    int rank=1;
+                    for (int index = 1; index < topnList.size() ; index++) {
+                        if (rank==topN)
+                            break;
+                        if (!Objects.equals(topnList.get(index).getValue(), topnList.get(index - 1).getValue())){
+                            rank++;
+                        }
+                        rankedList.add(topnList.get(index));
+                    }
+                    return rankedList.stream();
+
                 }
             };
             PartionWriter partionWriter = fileFormat.createWriter(outputPath, i);
