@@ -20,7 +20,7 @@ public class GetResultClient {
         UrlTopNService.Client client = new UrlTopNService.Client(protocol);
 
 
-        List<UrlTopNResult> application0 = client.getTopNAppResult("application_0");
+        List<UrlTopNResult> application0 = client.getTopNAppResult("application_1234");
         application0.stream().forEach(System.out::println);
 
 

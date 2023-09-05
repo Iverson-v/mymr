@@ -21,7 +21,7 @@ public class GetTaskStatusClient {
         TProtocol protocol = new TBinaryProtocol(transport);
         UrlTopNService.Client client = new UrlTopNService.Client(protocol);
 
-        getStatus(client,"application_0" );
+        getStatus(client,"application_1234" );
 
         // 关闭连接
         transport.close();
@@ -30,12 +30,17 @@ public class GetTaskStatusClient {
     public static void getStatus( UrlTopNService.Client client,String applicationId) throws TException, InterruptedException {
         while (true) {
             //获取状态
-            UrlTopNAppResponse appStatus = client.getAppStatus(applicationId);
-            //System.out.println(appStatus);
-            if(appStatus==null){
+            UrlTopNAppResponse appStatus=null;
+            try{appStatus = client.getAppStatus(applicationId);}catch (Exception e){
                 System.out.println("没有找到当前application");
                 break;
             }
+//            UrlTopNAppResponse appStatus = client.getAppStatus(applicationId);
+//            //System.out.println(appStatus);
+//            if(appStatus==null){
+//                System.out.println("没有找到当前application");
+//                break;
+//            }
 
             if (appStatus.getAppStatus() == 2) {
                 //finish,执行完成。
